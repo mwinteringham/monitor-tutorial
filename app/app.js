@@ -3,8 +3,12 @@ var express    = require('express'),
     log4js     = require('log4js');
     fs         = require('fs');
 
-var app = express();
-  app.use(bodyParser.json());
+var logger = log4js.getLogger(),
+    app = express();
+
+// Configure express and log4js
+
+app.use(bodyParser.json());
 
 log4js.configure({
   appenders: [
@@ -13,8 +17,8 @@ log4js.configure({
   ]
 })
 
-var logger = log4js.getLogger();
-var lock;
+
+// Endpoints to turn on and off the app randomisation
 
 app.get('/start',function(req,res){
   logger.debug('GET /start - Starting app');
@@ -28,6 +32,8 @@ app.get('/stop',function(req,res){
   lock = false;
   res.sendStatus(200);
 })
+
+// Start the app up and console out app usage
 
 app.listen(8001,function(err){
   if(err) return console.error(err);
@@ -44,6 +50,8 @@ app.listen(8001,function(err){
 
   console.log(man)
 });
+
+// Randomisation method to create app events
 
 function dotCounter(){
   var randomnumber = Math.floor(Math.random()*6);
