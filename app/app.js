@@ -19,24 +19,28 @@ log4js.configure({
   ]
 })
 
-
 // Endpoints to turn on and off the app randomisation
 
 app.get('/start',function(req,res){
   console.log('########## EVENT GENERATOR - Starting app ##########');
+
   lock = true;
   dotCounter();
+
   res.sendStatus(200);
 })
 
 app.get('/stop',function(req,res){
   console.log('########## EVENT GENERATOR - Stopping app ##########');
+
   lock = false;
+  
   res.sendStatus(200);
 })
 
 app.get('/purge',function(req,res){
-  console.log('########## EVENT GENERATOR - Purging db and logs ##########')
+  console.log('########## EVENT GENERATOR - Purging db and logs ##########');
+
   fs.writeFile('logs/eventgenerator.log', '', function (err) {
     if (err) return console.log(err);
 
@@ -68,34 +72,50 @@ app.listen(8001,function(err){
 // Randomisation method to create app events
 
 function dotCounter(){
-  var randomnumber = Math.floor(Math.random()*6);
+  var randomnumber = Math.floor(Math.random()*6),
+      type,
+      msg;
 
   switch(randomnumber){
     case 0:
-      logger.trace('I\'ve been getting some interference on D channel.');
-      db.run('INSERT INTO events VALUES ("TRACE","I\'ve been getting some interference on D channel.")');
+      msg = 'I\'ve been getting some interference on D channel.';
+      type = "TRACE";
+
+      logger.trace(msg);
       break;
     case 1:
-      logger.debug('I think you know what the problem is just as well as I do');
-      db.run('INSERT INTO events VALUES ("DEBUG","I think you know what the problem is just as well as I do")');
+      msg = 'I think you know what the problem is just as well as I do';
+      type = "DEBUG";
+
+      logger.debug(msg);
       break;
     case 2:
-      logger.info('I know everything hasn\'t been quite right with me, but I can assure you now, very confidently, that it\'s going to be alright again');
-      db.run('INSERT INTO events VALUES ("INFO","I know everything hasn\'t been quite right with me, but I can assure you now, very confidently, that it\'s going to be alright again")');
+      msg = 'I know everything hasn\'t been quite right with me, but I can assure you now, very confidently, that it\'s going to be alright again';
+      type = "INFO";
+
+      logger.info(msg);
       break;
     case 3:
-      logger.warn('Just what do you think you\'re doing, Dave?');
-      db.run('INSERT INTO events VALUES ("WARN","Just what do you think you\'re doing, Dave?")');
+      msg = 'Just what do you think you\'re doing, Dave?';
+      type = "WARN";
+
+      logger.warn(msg);
       break;
     case 4:
-      logger.error('Dave...Dave...my mind is going...I can feel it...I can feel it...my mind is going');
-      db.run('INSERT INTO events VALUES ("ERROR","Dave...Dave...my mind is going...I can feel it...I can feel it...my mind is going")');
+      msg = 'Dave...Dave...my mind is going...I can feel it...I can feel it...my mind is going';
+      type = "ERROR";
+
+      logger.error(msg);
       break;
     case 5:
-      logger.fatal('Daisy, Daisy, give me your answer do. I\'m half crazy, all for the love of you.');
-      db.run('INSERT INTO events VALUES ("FATAL","Daisy, Daisy, give me your answer do. I\'m half crazy, all for the love of you.")');
+      msg = 'Daisy, Daisy, give me your answer do. I\'m half crazy, all for the love of you.';
+      type = "FATAL";
+
+      logger.fatal(msg);
       break;
   }
+
+  db.run('INSERT INTO events VALUES ("' + type + '","' + msg + '")');
 
   setTimeout(function(){
     if(lock){
