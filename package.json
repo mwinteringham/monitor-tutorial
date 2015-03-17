@@ -1,7 +1,7 @@
 {
   "name": "monitorable-app",
   "version": "0.0.1",
-  "description": "Runable app for monitoring tutorial",
+  "description": "Runable app and example for monitoring tutorial",
   "author": "Mark Winteringham",
   "repository": {
     "type": "git",
