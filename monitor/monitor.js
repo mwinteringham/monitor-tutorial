@@ -1,5 +1,6 @@
 var express = require('express'),
     grep    = require('grep1'),
+    fs      = require('fs'),
     sqlite3 = require('sqlite3').verbose();
 
 var db = new sqlite3.Database('../app/events.sqlt');
@@ -25,6 +26,16 @@ app.get('/db/:term',function(req,res){
     }
   })
 })
+
+app.get('/', function (req, res) {
+  fs.readFile(__dirname + '/monitor.html', function (err, data) {
+    if (err) return send404(res);
+
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(data, 'utf-8');
+    res.end();
+  });
+});
 
 app.listen(8000,function(err){
   if(err) return console.error(err);
