@@ -1,5 +1,8 @@
 var express = require('express'),
-    grep    = require('grep1');
+    grep    = require('grep1'),
+    sqlite3 = require('sqlite3').verbose();
+
+var db = new sqlite3.Database('../app/events.sqlt');
 
 var app = express();
 
@@ -14,7 +17,13 @@ app.get('/log/:logtype',function(req,res){
 })
 
 app.get('/db/:term',function(req,res){
-  res.sendStatus(200);
+  db.all('SELECT * FROM events WHERE eventDescription LIKE "%Dave%"',function(err, row){
+    if(err){
+      res.sendStatus(500);
+    } else {
+      res.status(200).send(row.length.toString());
+    }
+  })
 })
 
 app.listen(8000,function(err){
