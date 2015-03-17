@@ -17,7 +17,7 @@ app.get('/log/:logtype',function(req,res){
 })
 
 app.get('/db/:term',function(req,res){
-  db.all('SELECT * FROM events WHERE eventDescription LIKE "%Dave%"',function(err, row){
+  db.all('SELECT * FROM events WHERE eventDescription LIKE "%' + req.params.term + '%"',function(err, row){
     if(err){
       res.sendStatus(500);
     } else {
