@@ -8,7 +8,7 @@ var db = new sqlite3.Database('../app/events.sqlt');
 var app = express();
 
 app.get('/log/:logtype',function(req,res){
-  grep([req.params.logtype,'-c','../app/logs/eventgenerator.log'],function(err, stdout, stderr){
+  grep([req.params.logtype,'-c','../app/eventgenerator.log'],function(err, stdout, stderr){
     if (err || stderr) {
       res.sendStatus(404);
     } else {

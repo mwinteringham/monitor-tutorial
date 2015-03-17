@@ -12,7 +12,7 @@ var logger = log4js.getLogger(),
 log4js.configure({
   appenders: [
     { type: 'console' },
-    { type: 'file', filename: 'logs/eventgenerator.log' }
+    { type: 'file', filename: 'eventgenerator.log' }
   ]
 })
 
@@ -38,7 +38,7 @@ app.get('/stop',function(req,res){
 app.get('/purge',function(req,res){
   console.log('########## EVENT GENERATOR - Purging db and logs ##########');
 
-  fs.writeFile('logs/eventgenerator.log', '', function (err) {
+  fs.writeFile('eventgenerator.log', '', function (err) {
     if (err) return console.log(err);
 
     db.run("DELETE FROM events", function (err){
@@ -61,7 +61,8 @@ app.listen(8001,function(err){
             'monitoring tool in this repo\n\n' +
             'Using the app:\n' +
             '- To start the app call http://localhost:8001/start to make the app create events\n' +
-            '- To stop the app call http://localhost:8001/stop';
+            '- To stop the app call http://localhost:8001/stop\n' +
+            '- To purge the DB call http://localhost:8001/purge';
 
   console.log(man)
 });
