@@ -1,12 +1,33 @@
 <html>
 <head>
 	<title>Event Generator - Monitor</title>
+	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+	<script type='text/javascript'>
+		$(document).ready(function() {
+
+			var getStats = function(type, search, div){
+		        $.get('/' + type + '/' + search, processEntries, 'json' );
+
+		        function processEntries(data) {
+					$(div).append('<li>' + search + ' - ' + data + '</li>');
+		        }
+		    }
+
+		    getStats('log','DEBUG','#logstats');
+		    getStats('log','WARN','#logstats');
+		    getStats('log','ERROR','#logstats');
+		    getStats('log','FATAL','#logstats');
+
+		    getStats('db','Dave','#dbstats');
+		    getStats('db','Daisy','#dbstats');
+		});
+	</script>
 </head>
 <body>
 	<h1>Event Generator - Monitor</h1>
 	<h2>Log stats</h2>
-	<div id='logstats'></div>
+	<ul id='logstats'></ul>
 	<h2>Database stats</h2>
-	<div id='dbstats'></div>
+	<ul id='dbstats'></ul>
 </body>
 </html>
