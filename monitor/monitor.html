@@ -5,11 +5,11 @@
 	<script type='text/javascript'>
 		$(document).ready(function() {
 
-			var getStats = function(type, search, div){
+			var getStats = function(type, search, ul){
 		        $.get('/' + type + '/' + search, processEntries, 'json' );
 
 		        function processEntries(data) {
-					$(div).append('<li>' + search + ' - ' + data + '</li>');
+					$(ul).append('<li>' + search + ' - ' + data + '</li>');
 		        }
 		    }
 
